@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personalised AI Tourist Guide</title>
+
+    <meta name="description"
+          content="Discover destinations, explore maps, plan trips, and estimate your travel budget with Personalised AI Tourist Guide.">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='travel.css') }}">
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        :root {
+            --green: #355e3b;
+            --dark-green: #263b2b;
+            --cream: #f7f5ed;
+            --white: #ffffff;
+            --text: #303b32;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 85px;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--white);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--white);
+            border-bottom: 1px solid #e6e7df;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            color: var(--green);
+            font-size: 21px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--green);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 20px;
+            border-radius: 6px;
+            background: var(--green);
+            color: white;
+            text-decoration: none;
+            border: 1px solid var(--green);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            background: var(--dark-green);
+        }
+
+        .button-light {
+            background: white;
+            color: var(--green);
+            border-color: white;
+        }
+
+        .hero {
+            background: var(--dark-green);
+            color: white;
+            padding: 85px 24px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 60px);
+            line-height: 1.15;
+            max-width: 750px;
+            margin: 0 0 22px;
+        }
+
+        .hero h1 span {
+            color: #dfe8d4;
+        }
+
+        .hero p {
+            max-width: 720px;
+            font-size: 17px;
+            color: #edf0e9;
+            margin-bottom: 28px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section {
+            padding: 65px 24px;
+        }
+
+        .section-cream {
+            background: var(--cream);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-heading {
+            max-width: 760px;
+            margin-bottom: 32px;
+        }
+
+        .section-heading .eyebrow {
+            color: var(--green);
+        }
+
+        .section-heading h2 {
+            color: var(--dark-green);
+            font-size: clamp(27px, 4vw, 38px);
+            line-height: 1.25;
+            margin: 8px 0 14px;
+        }
+
+        .section-heading p {
+            color: #59635a;
+        }
+
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .search-row input {
+            flex: 1;
+            min-width: 220px;
+            padding: 13px;
+            border: 1px solid #d7dcd2;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .destination-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .destination-card {
+            overflow: hidden;
+            background: white;
+            border: 1px solid #e6e7df;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .destination-card-content {
+            padding: 18px;
+        }
+
+        .destination-card h3 {
+            margin-top: 0;
+            color: var(--dark-green);
+        }
+
+        .destination-card p {
+            color: #626b62;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin: 18px 0;
+        }
+
+        .filter-buttons button {
+            border: 1px solid #d5ddcf;
+            border-radius: 20px;
+            padding: 8px 15px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .filter-buttons button:hover {
+            background: #e8eee3;
+        }
+
+        .map-search {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .map-search input {
+            flex: 1;
+            min-width: 220px;
+            padding: 13px;
+            border: 1px solid #d7dcd2;
+            border-radius: 6px;
+        }
+
+        #travelMap {
+            width: 100%;
+            height: 450px;
+            border-radius: 10px;
+            border: 1px solid #e0e3dc;
+            z-index: 1;
+        }
+
+        .planner-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e2e5dd;
+        }
+
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d5dbd1;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .planner-submit {
+            margin-top: 22px;
+        }
+
+        #advancedPlannerResult {
+            margin-top: 25px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            padding: 24px;
+            background: white;
+            border: 1px solid #e3e6dd;
+            border-radius: 9px;
+        }
+
+        .service-card h3 {
+            color: var(--green);
+        }
+
+        .closing-banner {
+            background: var(--dark-green);
+            color: white;
+            padding: 45px 24px;
+            text-align: center;
+        }
+
+        .closing-banner h2 {
+            font-size: 32px;
+            margin-top: 0;
+        }
+
+        .site-footer {
+            background: #202f24;
+            color: #e8ece5;
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .site-footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 800px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                gap: 14px;
+            }
+
+            .destination-grid,
+            .services-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 550px) {
+            .section {
+                padding: 45px 16px;
+            }
+
+            .hero {
+                padding: 60px 18px;
+            }
+
+            .destination-grid,
+            .services-grid,
+            .planner-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #travelMap {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="site-header">
+        <nav class="navbar">
+            <a href="#home" class="brand">✦ Personalised AI Guide</a>
+
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#destinations">Destinations</a>
+                <a href="#world-map">World Map</a>
+                <a href="#travel-planner">Trip Planner</a>
+                <a href="/budget">💰 Budget Planner</a>
+                <a href="/trip-history">Trip History</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <p class="eyebrow">✦ Your world, intelligently explored</p>
+
+                <h1>
+                    Your journey.<br>
+                    <span>Your world.</span>
+                </h1>
+
+                <p>
+                    Discover extraordinary places, explore different cultures,
+                    compare travel options, and plan journeys personalised
+                    to your interests, budget, and travel dates.
+                </p>
+
+                <div class="hero-buttons">
+                    <a class="button button-light" href="#destinations">
+                        Explore Destinations ↗
+                    </a>
+
+                    <a class="button" href="#travel-planner">
+                        Plan My Journey
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTRODUCTION -->
+        <section class="section section-cream">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Travel, reimagined</p>
+
+                    <h2>
+                        Every journey has a story.<br>
+                        Let's help you discover yours.
+                    </h2>
+
+                    <p>
+                        From historic monuments to breathtaking landscapes,
+                        discover destinations that match your interests.
+                        Explore attractions, organise your itinerary,
+                        investigate transport options, and prepare for
+                        your next adventure from one platform.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DESTINATIONS -->
+        <section class="section" id="destinations">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">The world awaits</p>
+                    <h2>Find your next wonder.</h2>
+                    <p>
+                        Explore famous landmarks and cultural treasures
+                        from India and around the world.
+                    </p>
+                </div>
+
+                <div class="search-row">
+                    <input
+                        type="search"
+                        id="destinationSearch"
+                        placeholder="Search destinations..."
+                        aria-label="Search destinations">
+
+                    <button class="button" type="button"
+                            id="destinationSearchButton">
+                        Search
+                    </button>
+                </div>
+
+                <div class="filter-buttons">
+                    <button type="button" data-category="all">All Places</button>
+                    <button type="button" data-category="nature">Nature</button>
+                    <button type="button" data-category="history">History</button>
+                    <button type="button" data-category="beach">Beaches</button>
+                    <button type="button" data-category="city">Cities</button>
+                </div>
+
+                <p id="destinationCount" aria-live="polite"></p>
+
+                <div class="destination-grid" id="destinationGrid">
+                    <!-- Destination cards are loaded by your JavaScript files. -->
+                </div>
+            </div>
+        </section>
+
+        <!-- WORLD MAP -->
+        <section class="section section-cream" id="world-map">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Explore the map</p>
+                    <h2>Discover places around you.</h2>
+                    <p>
+                        Search for a destination and explore tourist
+                        locations on the interactive map.
+                    </p>
+                </div>
+
+                <div class="map-search">
+                    <input
+                        type="search"
+                        id="mapLocation"
+                        placeholder="Enter a city or destination..."
+                        aria-label="Search map location">
+
+                    <button class="button" id="mapSearchButton" type="button">
+                        Find Location
+                    </button>
+                </div>
+
+                <div id="travelMap" aria-label="Interactive travel map"></div>
+            </div>
+        </section>
+
+        <!-- TRIP PLANNER -->
+        <section class="section" id="travel-planner">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Plan your adventure</p>
+                    <h2>Your journey, your way.</h2>
+                    <p>
+                        Enter your travel details to create a personalised
+                        itinerary with destination, transport, weather,
+                        and budget information where available.
+                    </p>
+                </div>
+
+                <div class="planner-panel">
+                    <form id="advancedPlannerForm">
+                        <div class="planner-grid">
+
+                            <div class="form-group">
+                                <label for="startingPoint">
+                                    Starting Point
+                                </label>
+                                <input type="text" id="startingPoint"
+                                       placeholder="e.g. Pune" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="destinationPoint">
+                                    Destination
+                                </label>
+                                <input type="text" id="destinationPoint"
+                                       placeholder="e.g. Goa" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="departureDate">
+                                    Departure Date
+                                </label>
+                                <input type="date" id="departureDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="returnDate">
+                                    Return Date
+                                </label>
+                                <input type="date" id="returnDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="travelBudget">
+                                    Total Budget (₹)
+                                </label>
+                                <input type="number" id="travelBudget"
+                                       min="1" placeholder="e.g. 10000" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="travellerCount">
+                                    Number of Travellers
+                                </label>
+                                <input type="number" id="travellerCount"
+                                       min="1" value="2" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="transportMode">
+                                    Preferred Transport
+                                </label>
+                                <select id="transportMode">
+                                    <option value="any">Any Transport</option>
+                                    <option value="bus">Bus</option>
+                                    <option value="rail">Train</option>
+                                    <option value="flight">Flight</option>
+                                    <option value="private">Private Vehicle</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="travelInterest">
+                                    Main Interest
+                                </label>
+                                <select id="travelInterest">
+                                    <option value="Culture">Culture</option>
+                                    <option value="Nature">Nature</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Food">Food</option>
+                                    <option value="History">History</option>
+                                    <option value="Beaches">Beaches</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="travelSeason">
+                                    Travel Season
+                                </label>
+                                <select id="travelSeason">
+                                    <option value="any">Any Season</option>
+                                    <option value="summer">Summer</option>
+                                    <option value="monsoon">Monsoon</option>
+                                    <option value="winter">Winter</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="travelStyle">
+                                    Travel Style
+                                </label>
+                                <select id="travelStyle">
+                                    <option value="balanced">Balanced</option>
+                                    <option value="budget">Budget Friendly</option>
+                                    <option value="relaxed">Relaxed</option>
+                                    <option value="adventure">Adventure</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <button class="button planner-submit" type="submit">
+                            Create My Travel Plan
+                        </button>
+                    </form>
+
+                    <div id="advancedPlannerResult"
+                         aria-live="polite"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section class="section section-cream" id="services">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="eyebrow">Travel made simpler</p>
+                    <h2>Everything you need for your journey.</h2>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card">
+                        <h3>🗺️ Interactive Map</h3>
+                        <p>
+                            Explore locations and find destinations
+                            using the interactive map.
+                        </p>
+                        <a href="#world-map">Explore Map →</a>
+                    </article>
+
+                    <article class="service-card">
+                        <h3>✈️ Trip Planner</h3>
+                        <p>
+                            Prepare a travel itinerary based on your
+                            dates, interests, and budget.
+                        </p>
+                        <a href="#travel-planner">Plan a Trip →</a>
+                    </article>
+
+                    <article class="service-card">
+                        <h3>💰 Budget Planner</h3>
+                        <p>
+                            Estimate how your travel budget can be
+                            divided across major expenses.
+                        </p>
+                        <a href="/budget">Estimate Budget →</a>
+                    </article>
+
+                    <article class="service-card">
+                        <h3>📚 Trip History</h3>
+                        <p>
+                            View trips that you have saved in your
+                            trip history.
+                        </p>
+                        <a href="/trip-history">View Trip History →</a>
+                    </article>
+
+                    <article class="service-card">
+                        <h3>📍 Discover Destinations</h3>
+                        <p>
+                            Browse destinations and discover places
+                            that suit your interests.
+                        </p>
+                        <a href="#destinations">Browse Places →</a>
+                    </article>
+
+                    <article class="service-card">
+                        <h3>💬 Travel Assistant</h3>
+                        <p>
+                            Use the travel chatbot for basic travel
+                            questions and guidance.
+                        </p>
+                        <a href="#travel-assistant">Ask the Assistant →</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CLOSING BANNER -->
+    <section class="closing-banner">
+        <div class="container">
+            <h2>Your next adventure starts here.</h2>
+            <p>Discover more. Plan better. Travel confidently.</p>
+            <a href="#travel-planner" class="button button-light">
+                Plan Your Journey
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <p><strong>✦ Personalised AI Tourist Guide</strong></p>
+            <p>Explore the world, one journey at a time.</p>
+            <p>Designed by Shubhankar, Gargi, Rohit and Mitali</p>
+        </div>
+
+        <!-- CHATBOT -->
+        <section id="travel-assistant" aria-label="Travel chatbot">
+            <div class="container">
+                <h2>Travel Assistant</h2>
+                <p>Ask a question about your journey.</p>
+
+                <div id="chatMessages" aria-live="polite"></div>
+
+                <form id="chatForm">
+                    <input
+                        type="text"
+                        id="chatInput"
+                        placeholder="Ask me about travelling..."
+                        aria-label="Enter your travel question">
+
+                    <button class="button" type="submit">
+                        Send
+                    </button>
+                </form>
+            </div>
+        </section>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='destination-info.js') }}"></script>
+    <script src="{{ url_for('static', filename='map.js') }}"></script>
+    <script src="{{ url_for('static', filename='travel.js') }}"></script>
+    <script src="{{ url_for('static', filename='map-planner-link.js') }}"></script>
+    <script src="{{ url_for('static', filename='chatbot.js') }}"></script>
+
+</body>
+</html>

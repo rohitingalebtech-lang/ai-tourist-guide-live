@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        header {
+            background: #047857;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        h2 {
+            color: #047857;
+        }
+
+        .row {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            background: #047857;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>✈️ Trip Details</h1>
+</header>
+
+<main>
+
+    <h2>{{ trip["starting_city"] }} → {{ trip["destination"] }}</h2>
+
+    <div class="row">👥 Travellers: {{ trip["travellers"] }}</div>
+
+    <div class="row">📅 Duration: {{ trip["days"] }} day(s)</div>
+
+    <div class="row">🚆 Main Transport: {{ trip["transport"] }}</div>
+
+    <div class="row">💰 Total Trip Cost: ₹{{ "%.2f"|format(trip["total_cost"]) }}</div>
+
+    <div class="row">🧍 Cost Per Person: ₹{{ "%.2f"|format(trip["cost_per_person"]) }}</div>
+
+    <div class="row">🎯 Planned Budget: ₹{{ "%.2f"|format(trip["budget_limit"]) }}</div>
+
+    <div class="row">🕒 Saved At: {{ trip["created_at"] }}</div>
+
+    <a href="/trip-history">← Back to Trip History</a>
+
+</main>
+
+</body>
+</html>

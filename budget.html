@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Trip Budget Planner</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: linear-gradient(135deg, #064e3b, #059669);
+            color: white;
+            padding: 28px 16px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px #0000000c;
+        }
+
+        h2 {
+            color: #047857;
+            margin-top: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .expense-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .expense {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .expense small {
+            display: block;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 18px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .calculate {
+            width: 100%;
+            background: #059669;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .calculate:hover {
+            background: #047857;
+        }
+
+        .secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+            margin: 5px 5px 0 0;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .summary {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            padding: 17px;
+            border-radius: 10px;
+        }
+
+        .summary span {
+            display: block;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 9px;
+        }
+
+        .summary strong {
+            font-size: 22px;
+            color: #047857;
+            overflow-wrap: anywhere;
+        }
+
+        .breakdown {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        .breakdown th, .breakdown td {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .breakdown th {
+            background: #f8fafc;
+        }
+
+        .notice {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 12px;
+            border-radius: 5px;
+            line-height: 1.5;
+        }
+
+        #budgetAdvice {
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid, .expense-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>💰 Smart Trip Budget Planner</h1>
+    <p>Plan your expenses, control your budget, and travel smarter!</p>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>✈️ Your Trip Details</h2>
+
+        <div class="form-grid">
+            <div>
+                <label for="startCity">Starting City</label>
+                <input id="startCity" type="text" placeholder="e.g. Pune">
+            </div>
+
+            <div>
+                <label for="destination">Destination</label>
+                <input id="destination" type="text" placeholder="e.g. Goa">
+            </div>
+
+            <div>
+                <label for="travellers">Number of Travellers</label>
+                <input id="travellers" type="number" min="1" max="100" value="2">
+            </div>
+
+            <div>
+                <label for="days">Number of Days</label>
+                <input id="days" type="number" min="1" max="365" value="3">
+            </div>
+
+            <div>
+                <label for="transport">Main Transport</label>
+                <select id="transport">
+                    <option value="Bus">Bus</option>
+                    <option value="Train">Train</option>
+                    <option value="Flight">Flight</option>
+                    <option value="Car">Car</option>
+                    <option value="Bike">Bike</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="budgetLimit">Your Total Budget (₹)</label>
+                <input id="budgetLimit" type="number" min="0" value="10000">
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>🧾 Estimated Expenses</h2>
+        <p>Enter the estimated costs below. You can change every amount.</p>
+
+        <div class="expense-grid">
+
+            <div class="expense">
+                <label for="transportCost">Transport (₹ per person, return)</label>
+                <input id="transportCost" type="number" min="0" value="1000">
+                <small>Bus, train, flight, or vehicle travel.</small>
+            </div>
+
+            <div class="expense">
+                <label for="hotelCost">Hotel (₹ per room, per night)</label>
+                <input id="hotelCost" type="number" min="0" value="1500">
+                <small>Number of rooms is calculated from travellers.</small>
+            </div>
+
+            <div class="expense">
+                <label for="foodCost">Food (₹ per person, per day)</label>
+                <input id="foodCost" type="number" min="0" value="500">
+                <small>Breakfast, lunch, dinner, and snacks.</small>
+            </div>
+
+            <div class="expense">
+                <label for="localCost">Local Transport (₹ per person, per day)</label>
+                <input id="localCost" type="number" min="0" value="200">
+                <small>Local buses, auto-rickshaws, and shared travel.</small>
+            </div>
+
+            <div class="expense">
+                <label for="entryCost">Entry Tickets (₹ per person, total)</label>
+                <input id="entryCost" type="number" min="0" value="300">
+                <small>Tourist attractions and monuments.</small>
+            </div>
+
+            <div class="expense">
+                <label for="otherCost">Other Expenses (₹ per person, total)</label>
+                <input id="otherCost" type="number" min="0" value="500">
+                <small>Shopping, emergency expenses, and extras.</small>
+            </div>
+
+            <div class="expense">
+                <label for="extraCost">Additional Group Expenses (₹)</label>
+                <input id="extraCost" type="number" min="0" value="0">
+                <small>Parking, tolls, or other shared charges.</small>
+            </div>
+
+        </div>
+
+        <button class="calculate" id="calculateButton">
+            🧮 Calculate My Trip Budget
+        </button>
+    </section>
+
+    <section class="card results" id="results">
+        <h2>📊 Your Budget Summary</h2>
+
+        <div class="summary-grid">
+            <div class="summary">
+                <span>Total Trip Cost</span>
+                <strong id="totalCost">₹0</strong>
+            </div>
+
+            <div class="summary">
+                <span>Cost Per Person</span>
+                <strong id="perPerson">₹0</strong>
+            </div>
+
+            <div class="summary">
+                <span>Remaining Budget</span>
+                <strong id="remainingBudget">₹0</strong>
+            </div>
+        </div>
+
+        <h3>Expense Breakdown</h3>
+
+        <table class="breakdown">
+            <thead>
+                <tr>
+                    <th>Expense</th>
+                    <th>Group Total</th>
+                    <th>Per Person</th>
+                </tr>
+            </thead>
+
+            <tbody id="expenseBreakdown"></tbody>
+        </table>
+
+        <h3>💡 Budget Advice</h3>
+        <div id="budgetAdvice"></div>
+
+        <p class="notice">
+            Note: These are estimates based on the amounts you enter.
+            They are not live ticket, hotel, or transport prices.
+        </p>
+        <button class="calculate" id="saveTripButton">
+    💾 Save This Trip to History
+</button>
+
+<p id="saveTripMessage"></p>
+
+        <button class="secondary" id="editBudgetButton">✏️ Edit Expenses</button>
+        <button class="secondary" id="printButton">🖨️ Print Budget</button>
+    </section>
+
+</main>
+
+<footer>
+    AI Tourist Guide | Smart Travel Planning
+</footer>
+
+<script>
+    const fields = [
+        "travellers", "days", "budgetLimit", "transportCost",
+        "hotelCost", "foodCost", "localCost", "entryCost",
+        "otherCost", "extraCost"
+    ];
+
+    function getNumber(id) {
+        return Number(document.getElementById(id).value);
+    }
+
+    function money(amount) {
+        return "₹" + Math.round(amount).toLocaleString("en-IN");
+    }
+
+    function calculateBudget() {
+        const start = document.getElementById("startCity").value.trim();
+        const destination = document.getElementById("destination").value.trim();
+
+        const travellers = getNumber("travellers");
+        const days = getNumber("days");
+        const budgetLimit = getNumber("budgetLimit");
+
+        for (const id of fields) {
+            const input = document.getElementById(id);
+            const value = Number(input.value);
+
+            if (input.value.trim() === "" || !Number.isFinite(value) || value < 0) {
+                alert("Please enter valid, non-negative numbers in all expense fields.");
+                input.focus();
+                return;
+            }
+        }
+
+        if (travellers < 1 || !Number.isInteger(travellers) ||
+            days < 1 || !Number.isInteger(days)) {
+            alert("Travellers and days must be whole numbers greater than zero.");
+            return;
+        }
+
+        if (travellers > 100 || days > 365) {
+            alert("Please enter at most 100 travellers and 365 days.");
+            return;
+        }
+
+        if (budgetLimit <= 0) {
+            alert("Please enter a total budget greater than zero.");
+            return;
+        }
+
+        if (!start || !destination) {
+            alert("Please enter both your starting city and destination.");
+            return;
+        }
+
+        const rooms = Math.ceil(travellers / 2);
+        const nights = Math.max(days - 1, 0);
+
+        const expenses = [
+            {
+                name: "Main Transport",
+                total: getNumber("transportCost") * travellers
+            },
+            {
+                name: "Hotel",
+                total: getNumber("hotelCost") * rooms * nights
+            },
+            {
+                name: "Food",
+                total: getNumber("foodCost") * travellers * days
+            },
+            {
+                name: "Local Transport",
+                total: getNumber("localCost") * travellers * days
+            },
+            {
+                name: "Entry Tickets",
+                total: getNumber("entryCost") * travellers
+            },
+            {
+                name: "Other Expenses",
+                total: getNumber("otherCost") * travellers
+            },
+            {
+                name: "Additional Group Expenses",
+                total: getNumber("extraCost")
+            }
+        ];
+
+        const total = expenses.reduce((sum, item) => sum + item.total, 0);
+        const perPerson = total / travellers;
+        const remaining = budgetLimit - total;
+
+        document.getElementById("totalCost").textContent = money(total);
+        document.getElementById("perPerson").textContent = money(perPerson);
+
+        const remainingElement = document.getElementById("remainingBudget");
+        remainingElement.textContent =
+            remaining < 0 ? "-" + money(Math.abs(remaining)) : money(remaining);
+
+        const tbody = document.getElementById("expenseBreakdown");
+        tbody.replaceChildren();
+
+        expenses.forEach(item => {
+            const row = document.createElement("tr");
+
+            [item.name, money(item.total), money(item.total / travellers)]
+                .forEach(value => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+            tbody.appendChild(row);
+        });
+
+        const advice = document.getElementById("budgetAdvice");
+        advice.replaceChildren();
+
+        const messages = [
+            `📍 Trip: ${start} → ${destination}`,
+            `👥 Travellers: ${travellers}`,
+            `📅 Duration: ${days} days`,
+            `🏨 Estimated hotel rooms: ${rooms} room(s), assuming two people per room`,
+            `🚆 Main transport: ${document.getElementById("transport").value}`
+        ];
+
+        if (remaining < 0) {
+            messages.push(`⚠️ You are over budget by ${money(Math.abs(remaining))}.`);
+            messages.push("Consider reducing hotel, transport, or other expenses.");
+        } else {
+            messages.push(`✅ You have ${money(remaining)} remaining in your budget.`);
+        }
+
+        messages.forEach(message => {
+            const paragraph = document.createElement("p");
+            paragraph.textContent = message;
+            advice.appendChild(paragraph);
+        });
+
+        document.getElementById("results").style.display = "block";
+        document.getElementById("results").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        localStorage.setItem("lastTripBudget", JSON.stringify({
+            start,
+            destination,
+            travellers,
+            days,
+            budgetLimit,
+            total,
+            perPerson,
+            remaining,
+            expenses,
+            transport: document.getElementById("transport").value,
+            calculatedAt: new Date().toISOString()
+        }));
+    }
+
+    document.getElementById("calculateButton")
+        .addEventListener("click", calculateBudget);
+
+    document.getElementById("editBudgetButton").addEventListener("click", () => {
+        document.querySelector(".expense-grid").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    });
+
+    document.getElementById("printButton").addEventListener("click", () => {
+        window.print();
+    });
+        document.getElementById("saveTripButton").addEventListener("click", async function () {
+        const savedBudget = localStorage.getItem("lastTripBudget");
+        const message = document.getElementById("saveTripMessage");
+
+        if (!savedBudget) {
+            message.textContent = "Please calculate your trip budget first.";
+            return;
+        }
+
+        let trip;
+
+        try {
+            trip = JSON.parse(savedBudget);
+        } catch (error) {
+            message.textContent = "Unable to read your budget. Please calculate again.";
+            return;
+        }
+
+        this.disabled = true;
+        message.textContent = "Saving your trip...";
+
+        try {
+            const response = await fetch("/save-trip", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(trip)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || "Unable to save trip.");
+            }
+
+            message.textContent = "✅ Trip saved successfully!";
+
+        } catch (error) {
+            message.textContent = "❌ " + error.message;
+        } finally {
+            this.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>

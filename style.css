@@ -1,0 +1,396 @@
+/* ==========================================
+   NATURAL TRAVEL THEME — FINAL OVERRIDES
+   Cream • Forest Green • White
+========================================== */
+
+:root {
+    --travel-green: #355e3b;
+    --travel-dark: #263b2b;
+    --travel-cream: #f7f5ed;
+    --travel-white: #ffffff;
+    --travel-text: #343a35;
+    --travel-muted: #70776f;
+    --travel-border: #e4e7df;
+}
+
+/* Main website */
+body {
+    background: var(--travel-white) !important;
+    color: var(--travel-text);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+/* Navigation */
+.navbar {
+    background: var(--travel-white) !important;
+    border-bottom: 1px solid var(--travel-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.navbar nav a {
+    color: var(--travel-text);
+}
+
+.navbar nav a:hover {
+    color: var(--travel-green);
+}
+
+.brand,
+.brand-ai {
+    color: var(--travel-green);
+}
+
+/* Buttons */
+.primary-button,
+.nav-button {
+    background: var(--travel-green) !important;
+    color: var(--travel-white) !important;
+    border: 1px solid var(--travel-green);
+    border-radius: 6px;
+    box-shadow: none !important;
+    text-decoration: none;
+}
+
+.primary-button:hover,
+.nav-button:hover {
+    background: var(--travel-dark) !important;
+}
+
+.secondary-button {
+    background: var(--travel-white) !important;
+    color: var(--travel-green) !important;
+    border: 1px solid var(--travel-green);
+    border-radius: 6px;
+    box-shadow: none !important;
+}
+
+/* Hero section */
+.hero {
+    background-color: var(--travel-dark);
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-overlay {
+    background: linear-gradient(
+        90deg,
+        rgba(25, 43, 29, 0.65),
+        rgba(25, 43, 29, 0.15)
+    );
+}
+
+.hero h1,
+.hero p,
+.hero .eyebrow,
+.hero .hero-note,
+.hero .hero-bottom {
+    color: var(--travel-white) !important;
+}
+
+.hero h1 span {
+    color: #dce9d4 !important;
+}
+
+/* Section headings */
+h2,
+h3 {
+    color: var(--travel-dark);
+    letter-spacing: normal;
+}
+
+.section-label {
+    color: var(--travel-green);
+    letter-spacing: 1px;
+}
+
+.intro h2 span,
+.section-heading h2 span,
+.planner-heading h2 span {
+    color: var(--travel-green);
+}
+
+/* Natural backgrounds */
+.intro,
+.personal-planner,
+.travel-services,
+.closing-banner,
+.chatbot-section {
+    background: var(--travel-cream) !important;
+}
+
+/* Search fields */
+.search-box,
+.map-search-panel {
+    background: var(--travel-white);
+    border: 1px solid var(--travel-border);
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+input,
+select,
+textarea {
+    color: var(--travel-text);
+    border-color: #d5dbd2;
+    border-radius: 6px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #a8bda6;
+    outline-offset: 1px;
+}
+
+/* Category filters */
+.filter {
+    background: var(--travel-white);
+    color: var(--travel-green);
+    border: 1px solid var(--travel-border);
+    border-radius: 20px;
+    box-shadow: none;
+}
+
+.filter.active,
+.filter:hover {
+    background: var(--travel-green);
+    color: var(--travel-white);
+    border-color: var(--travel-green);
+}
+
+/* Destination and service cards */
+.destination-card,
+.service-card {
+    background: var(--travel-white);
+    color: var(--travel-text);
+    border: 1px solid var(--travel-border);
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(30, 50, 30, 0.04);
+}
+
+.destination-card:hover,
+.service-card:hover {
+    transform: none;
+    box-shadow: 0 6px 18px rgba(30, 50, 30, 0.08);
+}
+
+.destination-card h3,
+.service-card h3 {
+    color: var(--travel-dark);
+}
+
+.destination-card p,
+.service-card p {
+    color: var(--travel-muted);
+}
+
+.destination-card a,
+.service-card a {
+    color: var(--travel-green);
+}
+
+/* Destination details */
+.destination-details-panel {
+    background: var(--travel-cream);
+    border: 1px solid var(--travel-border);
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.destination-detail-box {
+    background: var(--travel-white);
+    border: 1px solid var(--travel-border);
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+/* Planner form */
+.advanced-planner-form {
+    background: var(--travel-white);
+    border: 1px solid var(--travel-border);
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.travel-field label,
+.map-search-panel label {
+    color: var(--travel-dark);
+}
+
+/* Map */
+#travelMap {
+    border: 1px solid var(--travel-border);
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+/* Chatbot */
+.chatbot-container {
+    background: var(--travel-white);
+    border: 1px solid var(--travel-border);
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.chatbot-topbar {
+    background: var(--travel-green);
+    color: var(--travel-white);
+}
+
+.chatbot-topbar h3,
+.chatbot-topbar span {
+    color: var(--travel-white);
+}
+
+.chatbot-quick-actions button {
+    background: var(--travel-cream);
+    color: var(--travel-green);
+    border: 1px solid var(--travel-border);
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.chatbot-quick-actions button:hover {
+    background: #e5ecdf;
+}
+
+/* Footer */
+.site-footer {
+    background: var(--travel-dark);
+    color: var(--travel-cream);
+}
+
+.site-footer .brand,
+.site-footer .brand-ai,
+.site-footer p,
+.site-footer span,
+.site-footer strong {
+    color: var(--travel-cream);
+}
+
+/* Remove excessive decorative shadows */
+.search-box,
+.map-search-panel,
+.advanced-planner-form,
+.chatbot-container {
+    box-shadow: none;
+}
+
+/* Accessibility */
+button {
+    cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--travel-green);
+    outline-offset: 3px;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+    .section-padding {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+/* ===== CHATBOT VISIBILITY FIX ===== */
+
+#travel-assistant {
+    padding: 30px 20px;
+    color: #ffffff;
+}
+
+#travel-assistant h2 {
+    color: #ffffff;
+    text-align: center;
+}
+
+#travel-assistant #chatMessages {
+    max-height: 350px;
+    overflow-y: auto;
+    margin: 20px auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#travel-assistant .chat-message {
+    padding: 16px 20px;
+    border-radius: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+#travel-assistant .chat-message strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #164e3b;
+}
+
+#travel-assistant .chat-message p {
+    margin: 0;
+    color: #18352b;
+}
+
+#travel-assistant .bot-message {
+    background: #f0f7f2;
+    color: #18352b;
+    text-align: left;
+}
+
+#travel-assistant .user-message {
+    background: #176653;
+    color: #ffffff;
+    text-align: right;
+}
+
+#travel-assistant .user-message strong,
+#travel-assistant .user-message p {
+    color: #ffffff;
+}
+
+#travel-assistant #chatForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#travel-assistant #chatInput,
+#travel-assistant #chatLanguage,
+#travel-assistant #chatSendButton {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+#travel-assistant #chatInput {
+    width: min(280px, 100%);
+    background: #ffffff;
+    color: #18352b;
+    border: 1px solid #a5c5b3;
+}
+
+#travel-assistant #chatLanguage {
+    background: #ffffff;
+    color: #18352b;
+}
+
+#travel-assistant #chatSendButton {
+    background: #176653;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+#travel-assistant #chatSendButton:hover {
+    background: #104b3d;
+}

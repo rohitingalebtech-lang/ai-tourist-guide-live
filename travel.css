@@ -1,0 +1,756 @@
+```css
+/* ========================================
+   PERSONALISED AI TOURIST GUIDE
+   Map and Travel Planner Styles
+======================================== */
+
+.world-map-section {
+    background: #f7f5ef;
+}
+
+.map-search-panel {
+    background: #ffffff;
+    border: 1px solid #e3e4da;
+    border-radius: 5px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.map-search-panel label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #173d32;
+}
+
+.map-search-row {
+    display: flex;
+    gap: 12px;
+}
+
+.map-search-row input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #dfe2d7;
+    border-radius: 4px;
+    outline-color: #78966f;
+    font-size: 13px;
+}
+
+.map-search-row .primary-button {
+    flex-shrink: 0;
+}
+
+#mapStatus {
+    margin-top: 12px;
+    font-size: 11px;
+    line-height: 1.8;
+    color: #74786f;
+}
+
+#travelMap {
+    width: 100%;
+    height: 480px;
+    background: #e5e9df;
+    border: 1px solid #d9ded2;
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 5px;
+}
+
+.leaflet-popup-content {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* TRIP PLANNER */
+
+.personal-planner {
+    background: #eeece3;
+}
+
+.planner-heading {
+    max-width: 760px;
+    margin: 0 auto 42px;
+    text-align: center;
+}
+
+.planner-heading h2 {
+    margin-top: 18px;
+}
+
+.planner-heading h2 span {
+    color: #8d9e72;
+    font-style: italic;
+}
+
+.planner-heading p {
+    margin: 17px auto 0;
+    max-width: 620px;
+    color: #72766e;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.advanced-planner-form {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid #e5e3d9;
+    border-radius: 6px;
+    box-shadow: 0 12px 35px rgba(30, 48, 35, 0.04);
+}
+
+.travel-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.travel-field {
+    min-width: 0;
+}
+
+.travel-field label {
+    display: block;
+    margin-bottom: 10px;
+    color: #314c3b;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.travel-field input,
+.travel-field select {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 13px;
+    border: 1px solid #dfe2d7;
+    border-radius: 4px;
+    outline-color: #78966f;
+    background: #fbfbf8;
+    color: #304c3a;
+    font-size: 12px;
+}
+
+.travel-field input:focus,
+.travel-field select:focus {
+    border-color: #78966f;
+}
+
+.advanced-planner-form .full-button {
+    width: 100%;
+    min-height: 52px;
+    font-size: 12px;
+}
+
+.advanced-planner-result {
+    display: none;
+    margin-top: 25px;
+    padding: 25px;
+    border: 1px solid #dce5d4;
+    border-radius: 5px;
+    background: #f4f7ef;
+    color: #314c3b;
+    font-size: 12px;
+    line-height: 2;
+    overflow-wrap: anywhere;
+}
+
+.advanced-planner-result.visible {
+    display: block;
+}
+
+.advanced-planner-result h3 {
+    margin-bottom: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.advanced-planner-result h4 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.advanced-planner-result a {
+    color: #315d43;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.result-notice {
+    display: block;
+    margin-top: 15px;
+    padding-top: 13px;
+    border-top: 1px solid #dce5d4;
+    color: #74786f;
+    font-size: 10px;
+    line-height: 1.9;
+}
+
+
+/* TRAVEL SERVICE CARDS */
+
+.travel-services {
+    background: #f7f5ef;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    padding: 27px 22px;
+    background: #ffffff;
+    border: 1px solid #e7e5dc;
+    border-radius: 5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(24, 45, 31, 0.07);
+}
+
+.service-card > span {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 31px;
+}
+
+.service-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.service-card p {
+    min-height: 65px;
+    margin-top: 12px;
+    color: #74786f;
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+.service-card a {
+    display: inline-block;
+    margin-top: 18px;
+    color: #315d43;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* FOOTER */
+
+.site-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 48px 7%;
+    gap: 17px;
+}
+
+.presented-by {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    max-width: 900px;
+    line-height: 1.8;
+}
+
+.presented-by > span {
+    color: #c1cabe;
+    font-size: 11px;
+}
+
+.presented-by strong {
+    color: #d7e4c9;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.footer-tagline {
+    padding-top: 17px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    width: min(450px, 100%);
+}
+
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+    .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #travelMap {
+        height: 400px;
+    }
+}
+
+@media (max-width: 650px) {
+    .map-search-panel {
+        padding: 18px;
+    }
+
+    .map-search-row {
+        flex-direction: column;
+    }
+
+    .map-search-row .primary-button {
+        width: 100%;
+    }
+
+    #travelMap {
+        height: 340px;
+    }
+
+    .advanced-planner-form {
+        padding: 22px 17px;
+    }
+
+    .travel-form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card p {
+        min-height: auto;
+    }
+
+    .presented-by strong {
+        font-size: 11px;
+        line-height: 1.9;
+    }
+}
+```
+/* =====================================
+   TRIP PLANNER RESULTS
+===================================== */
+
+.planner-result-card,
+.planner-section {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 22px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.planner-result-card h2,
+.planner-section h3 {
+    color: #173b35;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.planner-result-card p,
+.planner-section p {
+    line-height: 1.7;
+    color: #4b5563;
+}
+
+.planner-note {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* DAILY ITINERARY */
+
+.itinerary-day {
+    display: flex;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.itinerary-day:last-child {
+    border-bottom: none;
+}
+
+.itinerary-day-number {
+    min-width: 65px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0f2e9;
+    color: #17634e;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.itinerary-day h4 {
+    margin: 0 0 8px;
+    color: #173b35;
+}
+
+.itinerary-day p {
+    margin: 5px 0;
+}
+
+/* BUDGET BREAKDOWN */
+
+.budget-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 4px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.budget-row:last-child {
+    border-bottom: none;
+}
+
+.budget-row strong {
+    color: #17634e;
+}
+
+/* TRANSPORT, HOTEL AND RESTAURANT CARDS */
+
+.planner-services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.planner-service-card {
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #f9fbfa;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.planner-service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.planner-service-card h4 {
+    margin: 0 0 10px;
+    color: #173b35;
+}
+
+.planner-service-card p {
+    font-size: 14px;
+}
+
+.planner-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: #17634e;
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.planner-link:hover {
+    background: #104737;
+}
+
+/* MAP POPUP */
+
+.tourist-map-popup h3 {
+    margin: 0 0 8px;
+    color: #173b35;
+}
+
+.tourist-map-popup p {
+    line-height: 1.5;
+}
+
+.tourist-map-popup a {
+    color: #17634e;
+    font-weight: 600;
+}
+
+/* MOBILE RESPONSIVENESS */
+
+@media (max-width: 650px) {
+    .planner-services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .planner-result-card,
+    .planner-section {
+        padding: 16px;
+    }
+
+    .itinerary-day {
+        gap: 10px;
+    }
+
+    .itinerary-day-number {
+        min-width: 55px;
+        font-size: 13px;
+    }
+
+    .budget-row {
+        font-size: 14px;
+    }
+}
+/* ==========================================
+   MULTILINGUAL TRAVEL CHATBOT
+========================================== */
+
+.chatbot-section {
+    padding: 70px 20px;
+    background: #f3f8f5;
+}
+
+.chatbot-heading {
+    max-width: 750px;
+    margin: 0 auto 30px;
+    text-align: center;
+}
+
+.chatbot-tag {
+    color: #17634e;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.chatbot-heading h2 {
+    margin: 12px 0;
+    color: #173b35;
+    font-size: clamp(27px, 4vw, 38px);
+}
+
+.chatbot-heading p {
+    color: #647067;
+    line-height: 1.7;
+}
+
+.chatbot-container {
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e0e8e2;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(25, 60, 45, 0.09);
+}
+
+.chatbot-topbar {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 20px;
+    background: #173b35;
+    color: #ffffff;
+}
+
+.chatbot-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border-radius: 50%;
+    font-size: 24px;
+}
+
+.chatbot-title {
+    flex: 1;
+}
+
+.chatbot-title h3 {
+    margin: 0 0 6px;
+    color: #ffffff;
+    font-size: 17px;
+}
+
+.chatbot-title span {
+    color: #b9e9d0;
+    font-size: 12px;
+}
+
+#chatLanguage {
+    max-width: 135px;
+    padding: 10px;
+    color: #173b35;
+    background: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.chatbot-quick-actions {
+    display: flex;
+    gap: 9px;
+    padding: 15px;
+    overflow-x: auto;
+    border-bottom: 1px solid #e8eee9;
+}
+
+.chatbot-quick-actions button {
+    flex-shrink: 0;
+    padding: 9px 13px;
+    color: #17634e;
+    background: #eef7f1;
+    border: 1px solid #d7e9dc;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.chatbot-quick-actions button:hover {
+    color: #ffffff;
+    background: #17634e;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 280px;
+    max-height: 420px;
+    padding: 22px;
+    overflow-y: auto;
+    background: #fbfdfb;
+}
+
+.chat-message {
+    max-width: 85%;
+    padding: 14px 16px;
+    border-radius: 13px;
+    overflow-wrap: anywhere;
+    line-height: 1.65;
+}
+
+.chat-message strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.chat-message p {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.bot-message {
+    align-self: flex-start;
+    color: #33483b;
+    background: #edf5ef;
+    border-bottom-left-radius: 3px;
+}
+
+.user-message {
+    align-self: flex-end;
+    color: #ffffff;
+    background: #17634e;
+    border-bottom-right-radius: 3px;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+    padding: 17px;
+    border-top: 1px solid #e8eee9;
+}
+
+#chatInput {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #d7e0d9;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+}
+
+#chatInput:focus {
+    border-color: #17634e;
+    box-shadow: 0 0 0 3px rgba(23, 99, 78, 0.1);
+}
+
+#chatSendButton {
+    padding: 12px 19px;
+    color: #ffffff;
+    background: #17634e;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+#chatSendButton:hover {
+    background: #104737;
+}
+
+#chatSendButton:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.chatbot-disclaimer {
+    margin: 0;
+    padding: 0 18px 18px;
+    color: #7b847e;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .chatbot-section {
+        padding: 45px 12px;
+    }
+
+    .chatbot-topbar {
+        flex-wrap: wrap;
+        padding: 15px;
+    }
+
+    #chatLanguage {
+        max-width: 100%;
+    }
+
+    .chat-messages {
+        padding: 14px;
+    }
+
+    .chat-message {
+        max-width: 94%;
+    }
+
+    .chat-input-area {
+        padding: 12px;
+    }
+
+    #chatSendButton {
+        padding: 12px;
+    }
+}
